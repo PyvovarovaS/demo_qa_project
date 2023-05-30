@@ -11,7 +11,7 @@
     <modules>
         <module>web-elements</module>
         <module>bookstore-api</module>
-        <module>bookstore-ui</module>
+        <module>bookstore-app</module>
     </modules>
 
     <properties>
@@ -20,13 +20,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 <!--      dependencies version-->
+        <allure-junit5.version>2.22.0</allure-junit5.version>
+        <cucumber-java.version>7.12.0</cucumber-java.version>
+        <cucumber-testng.version>7.12.0</cucumber-testng.version>
+        <junit.version>5.9.2</junit.version>
         <logback.version>1.4.7</logback.version>
         <lombok.version>1.18.26</lombok.version>
+        <selenide.version>6.12.4</selenide.version>
         <selenium.version>4.9.1</selenium.version>
         <testng.version>7.7.1</testng.version>
         <webdrivermanager.version>5.3.2</webdrivermanager.version>
 
 <!--      plugins version-->
+        <aspectj.version>1.9.19</aspectj.version>
         <surefire.plugin.version>3.0.0</surefire.plugin.version>
     </properties>
 
@@ -38,9 +44,25 @@
                 <version>${logback.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-java</artifactId>
+                <version>${cucumber-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-testng</artifactId>
+                <version>${cucumber-testng.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.github.bonigarcia</groupId>
                 <artifactId>webdrivermanager</artifactId>
                 <version>${webdrivermanager.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-junit5</artifactId>
+                <version>${allure-junit5.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -49,12 +71,23 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>com.codeborne</groupId>
+                <artifactId>selenide</artifactId>
+                <version>${selenide.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
                 <version>${selenium.version}</version>
             </dependency>
 
             <!--      dependencies for test-->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
@@ -71,6 +104,26 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire.plugin.version}</version>
+                    <configuration>
+                        <testFailureIgnore>false</testFailureIgnore>
+                        <argLine>
+                            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/
+                            aspectjweaver-${aspectj.version}.jar"
+                        </argLine>
+                        <systemProperties>
+                            <property>
+                                <name>junit.jupiter.extensions.autodetection.enabled</name>
+                                <value>true</value>
+                            </property>
+                        </systemProperties>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
